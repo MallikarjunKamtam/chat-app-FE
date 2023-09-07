@@ -1,2 +1,2 @@
 # chat-app-FE
-This is a full stack chat app
+This is a FE  chat app
