@@ -1,0 +1,60 @@
+import React, { useState } from "react";
+import BasicModal from "../common-components/modal";
+import CloseIcon from "@mui/icons-material/Close";
+import NewConversationsModalContent from "./newConversationsModalContent";
+import NewContactModalContent from "./newContactModalContent";
+const CONVERSATIONS = "Conversations";
+const CONTACTS = "Contacts";
+const tabsList = [CONVERSATIONS, CONTACTS];
+const btnStyles =
+  "border-2 p-4 border-white rounded w-full cursor-pointer hover:opacity-70 text-lg";
+
+function Sidebar({ id }: { id: string }) {
+  const [currentTab, setCurrentTab] = useState(CONVERSATIONS);
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  return (
+    <div className="p-4 w-1/2 m-auto h-screen flex flex-col   justify-between">
+      Welcome {id}
+      <div className="flex items-start justify-center gap-1 w-full h-[800px]  ">
+        {tabsList.map((item, index) => (
+          <div
+            onClick={() => {
+              setCurrentTab(item);
+            }}
+            key={index}
+            className={`${btnStyles} ${
+              currentTab === item ? "bg-[#222]" : ""
+            } `}
+          >
+            {item}
+          </div>
+        ))}
+      </div>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          setModalOpen(true);
+        }}
+        className={btnStyles}
+      >
+        Create a new {currentTab.slice(0, -1)}{" "}
+      </button>
+      <BasicModal
+        open={isModalOpen}
+        setOpen={setModalOpen}
+        modalContent={
+          <>
+            {currentTab === CONVERSATIONS ? (
+              <NewConversationsModalContent setModalOpen={setModalOpen} />
+            ) : (
+              <NewContactModalContent setModalOpen={setModalOpen} />
+            )}
+          </>
+        }
+      />
+    </div>
+  );
+}
+
+export default Sidebar;
