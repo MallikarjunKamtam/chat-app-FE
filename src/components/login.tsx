@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Formik } from "formik";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { LoginCreds } from "../models/login.model";
-import { v4 as uuid } from "uuid";
 
-const LoginForm = ({ setId }: { setId: any }) => {
-  const [initialCreds, setCreds] = useState<LoginCreds>({ loginID: null });
+
+import { postLogin } from "../api/auth.api";
+import { useAppDispatch } from "../app/hooks";
+import { postLoginAsync } from "../slices/users.slice";
+
+
+const LoginForm = () => {
+  const [initialCreds, setCreds] = useState<LoginCreds>({ user_name: null, password: null });
+  const [token, setToken] = useState(null)
+  const dispatch = useAppDispatch()
+
+  console.log(token, 'tokentokentoken')
 
   return (
     <div className="flex flex-col items-center justify-center p-4 gap-3">
@@ -26,17 +35,27 @@ const LoginForm = ({ setId }: { setId: any }) => {
           color="warning"
           onChange={(e) => {
             const { value } = e.target;
-            setCreds({ loginID: value });
+            setCreds({ ...initialCreds, user_name: value });
           }}
           id="login-id"
+          variant="outlined"
+        />
+        <TextField
+          sx={{ color: "white", backgroundColor: "lightgray" }}
+          color="warning"
+          onChange={(e) => {
+            const { value } = e.target;
+            setCreds({ ...initialCreds, password: value });
+          }}
+          id="password-id"
           variant="outlined"
         />
       </Box>
 
       <Stack spacing={2} direction="row">
         <Button
-          onClick={() => {
-            setId(initialCreds.loginID);
+          onClick={async () => {
+            await dispatch(postLoginAsync({ ...initialCreds }))
           }}
           variant="contained"
         >
@@ -44,15 +63,13 @@ const LoginForm = ({ setId }: { setId: any }) => {
         </Button>{" "}
         <Button
           color="warning"
-          onClick={() => {
-            setId(uuid());
-          }}
+          onClick={() => { }}
           variant="contained"
         >
           Create new
         </Button>
       </Stack>
-    </div>
+    </div >
   );
 };
 

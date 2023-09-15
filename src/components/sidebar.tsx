@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import BasicModal from "../common-components/modal";
-import CloseIcon from "@mui/icons-material/Close";
 import NewConversationsModalContent from "./newConversationsModalContent";
 import NewContactModalContent from "./newContactModalContent";
 const CONVERSATIONS = "Conversations";
@@ -9,13 +8,13 @@ const tabsList = [CONVERSATIONS, CONTACTS];
 const btnStyles =
   "border-2 p-4 border-white rounded w-full cursor-pointer hover:opacity-70 text-lg";
 
-function Sidebar({ id }: { id: string }) {
+function Sidebar() {
   const [currentTab, setCurrentTab] = useState(CONVERSATIONS);
   const [isModalOpen, setModalOpen] = useState(false);
 
   return (
-    <div className="p-4 w-1/2 m-auto h-screen flex flex-col   justify-between">
-      Welcome {id}
+    <div className="p-4 w-1/3  h-screen flex flex-col   justify-between">
+
       <div className="flex items-start justify-center gap-1 w-full h-[800px]  ">
         {tabsList.map((item, index) => (
           <div
@@ -23,9 +22,8 @@ function Sidebar({ id }: { id: string }) {
               setCurrentTab(item);
             }}
             key={index}
-            className={`${btnStyles} ${
-              currentTab === item ? "bg-[#222]" : ""
-            } `}
+            className={`${btnStyles} ${currentTab === item ? "bg-[#222]" : ""
+              } `}
           >
             {item}
           </div>

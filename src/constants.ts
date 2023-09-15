@@ -1,3 +1,1 @@
-export const CONSTANTS = {
-  localStoragePrefix: "CHAT_APP_",
-};
+export const REACT_APP_CHAT_APP_BASE_URL = "http://localhost:3002"

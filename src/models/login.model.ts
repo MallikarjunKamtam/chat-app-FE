@@ -1,3 +1,4 @@
 export interface LoginCreds {
-  loginID: string;
+  user_name: string;
+  password: string
 }
