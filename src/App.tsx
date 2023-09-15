@@ -3,7 +3,7 @@ import "./App.css";
 import LoginForm from "./components/login";
 import Dashboard from "./components/dashboard";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
-import { usersState, getAllUsersAsync } from "./slices/users.slice";
+
 import { Route, Routes, useNavigate } from 'react-router-dom'
 import NotFound from "./components/notfound";
 

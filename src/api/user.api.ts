@@ -1,6 +1,7 @@
 import axios from "axios";
 import { REACT_APP_CHAT_APP_BASE_URL } from "../constants";
-
+import { getToken } from "../utils";
+const token = getToken()
 
 export const postCreateUser = async ({ password, user_name }: { user_name: string, password: string }) => {
     try {
@@ -11,6 +12,8 @@ export const postCreateUser = async ({ password, user_name }: { user_name: strin
                 user_name, password
             }
         })
+
+        return res.data
     }
     catch (err) {
 
@@ -21,12 +24,16 @@ export const postCreateUser = async ({ password, user_name }: { user_name: strin
 export const putEditUser = async ({ password, user_name }: { user_name: string, password: string }) => {
     try {
         const res = await axios({
+            headers: {
+                Authorization: token,
+            },
             method: 'put',
             url: `${REACT_APP_CHAT_APP_BASE_URL}/users`,
             data: {
                 user_name, password
             }
         })
+        return res.data
     }
     catch (err) {
 
@@ -37,11 +44,15 @@ export const putEditUser = async ({ password, user_name }: { user_name: string, 
 export const getAllUsers = async () => {
     try {
         const res = await axios({
+
+            headers: {
+                Authorization: token,
+            },
             method: 'get',
             url: `http://localhost:3002/users`,
         })
 
-        return res
+        return res.data
     }
     catch (err) {
 

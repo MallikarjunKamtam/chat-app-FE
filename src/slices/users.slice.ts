@@ -5,6 +5,7 @@ import { IUsers } from '../models/users.model'
 import { getAllUsers, postCreateUser, putEditUser } from '../api/user.api'
 import { postLogin, postLogout } from '../api/auth.api'
 import { LoginCreds } from '../models/login.model'
+import Toast from '../common-components/toastify'
 
 // Define a type for the slice state
 interface UsersInterface {
@@ -39,10 +40,10 @@ export const postLoginAsync = createAsyncThunk(
         try {
             const res = await postLogin(payload);
             return res;
-        } catch (err) {
-            // const errMsg = Utils.handleError(err?.message);
-            // Toast(errMsg, { type: "error" });
-            throw err;
+        } catch (err: any) {
+            if (err.response.status === 401) {
+                Toast('Bad credentials', { type: "error" })
+            }
         }
     }
 );
@@ -57,6 +58,18 @@ export const postLogoutAsync = createAsyncThunk('post-logout-user',
     })
 
 
+export const postCreateUserAsync = createAsyncThunk('post-create-user',
+    async (data: { user_name: string, password: string }, { dispatch }) => {
+        try {
+            const res = await postCreateUser(data)
+            dispatch(getAllUsersAsync())
+            return res
+        } catch (err: any) {
+            Toast(err.response.data.message, { type: "error" })
+        }
+    })
+
+
 
 
 const usersSLice = createSlice({
@@ -66,7 +79,7 @@ const usersSLice = createSlice({
     },
     extraReducers(builder) {
         builder.addCase(getAllUsersAsync.fulfilled, (state, action) => {
-            state.allUsers = action.payload.data
+            state.allUsers = action.payload
         }).addCase(postLoginAsync.fulfilled, (state, action) => {
             // state.myProfile = { user_name: action.payload }
         })

@@ -2,7 +2,7 @@ import axios from "axios";
 import { getToken } from "../utils";
 import { LoginCreds } from "../models/login.model";
 import { REACT_APP_CHAT_APP_BASE_URL } from "../constants";
-import Toast from "../common-components/toastify";
+
 
 
 const token = getToken()

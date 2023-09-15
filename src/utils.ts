@@ -4,3 +4,8 @@ export const getToken = (): string => {
     return token
 
 }
+
+
+export const scrollTopAction = () => {
+    window.scroll({ top: 0, behavior: "smooth" });
+};
