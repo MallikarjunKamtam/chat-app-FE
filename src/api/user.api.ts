@@ -41,17 +41,15 @@ export const putEditUser = async ({ password, user_name }: { user_name: string, 
     }
 }
 
-export const getAllUsers = async () => {
+export const getAllUsers = async (currentUser: number) => {
     try {
         const res = await axios({
-
             headers: {
                 Authorization: token,
             },
             method: 'get',
-            url: `http://localhost:3002/users`,
+            url: `http://localhost:3002/users?id=${currentUser}`
         })
-
         return res.data
     }
     catch (err) {

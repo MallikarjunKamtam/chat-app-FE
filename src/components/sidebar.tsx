@@ -17,11 +17,13 @@ function Sidebar({
   currentChatUser: IUsers
 }) {
   const dispatch = useAppDispatch()
-  const { allUsers } = useAppSelector(usersState)
+  const { allUsers, myProfile } = useAppSelector(usersState)
 
   useEffect(() => {
-    dispatch(getAllUsersAsync())
-  }, [])
+    if (myProfile?.id) {
+      dispatch(getAllUsersAsync(myProfile?.id))
+    }
+  }, [myProfile?.id])
 
   return (
     <div

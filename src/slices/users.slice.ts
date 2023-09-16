@@ -23,9 +23,9 @@ const initialState: UsersInterface = {
 }
 
 export const getAllUsersAsync = createAsyncThunk('get-all-users',
-    async () => {
+    async (currentUser: number) => {
         try {
-            const res = await getAllUsers()
+            const res = await getAllUsers(currentUser)
             return res
         } catch (err) { throw err }
     })
@@ -70,10 +70,11 @@ export const verifyUserAsync = createAsyncThunk(
 
 
 export const postCreateUserAsync = createAsyncThunk('post-create-user',
-    async (data: { user_name: string, password: string, fetchAll: boolean }, { dispatch }) => {
+    async (data: { user_name: string, password: string, fetchAll: boolean, currentUser?: number }, { dispatch, getState }) => {
         try {
+
             const res = await postCreateUser(data)
-            data?.fetchAll && dispatch(getAllUsersAsync())
+            data?.fetchAll && dispatch(getAllUsersAsync(data?.currentUser))
             return res
         } catch (err: any) {
             Toast(err.response.data.message, { type: "error" })

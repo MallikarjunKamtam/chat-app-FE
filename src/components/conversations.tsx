@@ -24,7 +24,7 @@ const Conversations = ({
   const [text, setText] = useState('')
 
   useEffect(() => {
-    if (oppositeUser?.id) {
+    if (oppositeUser?.id && currentUser?.id) {
       dispatch(
         getAllMessagesAsync({
           senderId: currentUser?.id,
@@ -32,7 +32,7 @@ const Conversations = ({
         }),
       )
     }
-  }, [oppositeUser?.id])
+  }, [oppositeUser?.id, currentUser?.id])
 
   useEffect(() => {
     scrollToBottom()
@@ -49,8 +49,8 @@ const Conversations = ({
       dispatch(
         postSendMessageAsync({
           content: text,
-          sender: oppositeUser?.id,
-          receiver: currentUser?.id,
+          sender: currentUser?.id,
+          receiver: oppositeUser?.id,
         }),
       )
 
@@ -75,18 +75,28 @@ const Conversations = ({
       >
         {messages?.length ? (
           <div
-            style={{ height: '80vh' }}
             ref={scrollableDivRef}
-            className="overflow-scroll     justify-end w-full"
+            className="overflow-scroll w-full"
+            style={{
+              display: 'flex',
+              flexDirection: 'column-reverse',
+              height: '80vh',
+            }}
           >
             {messages?.map((message, index) => (
               <div
                 key={index + message?.created_at}
-                className={`text-start text-xs p-3  text-white mb-1 rounded w-fit max-w-lg ${
+                className={`text-start text-xs p-3 text-white mb-1 rounded w-fit max-w-lg ${
                   currentUser?.id === message?.sender?.id
                     ? 'bg-[#111d0a] self-end'
                     : 'bg-[#081b17]'
                 }`}
+                style={{
+                  alignSelf:
+                    currentUser?.id === message?.sender?.id
+                      ? 'flex-end'
+                      : 'flex-start',
+                }}
               >
                 {message?.content}
                 <p className="italic mt-4 text-end text-[10px]">
