@@ -6,8 +6,9 @@ import {
   postSendMessageAsync,
 } from '../slices/messages.slice'
 import moment from 'moment'
-import SendIcon from '@mui/icons-material/Send'
-import { scrollTopAction } from '../utils'
+
+import ConversationHeader from './coversationHeader'
+import ChatTextBox from './chatTextBox'
 
 const Conversations = ({
   currentUser,
@@ -27,7 +28,7 @@ const Conversations = ({
 
   useEffect(() => {
     scrollToBottom()
-  }, [text])
+  }, [text, messages])
 
   const scrollToBottom = () => {
     if (scrollableDivRef.current) {
@@ -49,45 +50,36 @@ const Conversations = ({
   }
 
   return (
-    <section className="w-1/2 bg-[#222]  my-10 rounded flex flex-col justify-end  p-2  relative ">
-      <div
-        ref={scrollableDivRef}
-        className="overflow-scroll  h-[700px]   mb-10 justify-end w-full"
-      >
-        {messages?.map((message, index) => (
-          <div
-            key={index + message?.created_at}
-            className={`text-start text-xs p-3  text-white mb-1 rounded w-fit max-w-lg ${
-              currentUser === message?.sender?.id
-                ? 'bg-[#111d0a] self-end'
-                : 'bg-[#081b17]'
-            }`}
-          >
-            {message?.content}
-            <p className="italic mt-4 text-end">
-              {moment(+message?.created_at).format('h:mm A')}
-            </p>
-          </div>
-        ))}
-      </div>
-      <div className="w-full flex items-center justify-around absolute">
-        <input
-          value={text}
-          onChange={(e) => {
-            const { value } = e.target
-            setText(value)
-          }}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              sendMessage(text)
-            }
-          }}
-          className="w-11/12 text-black px-3 py-1 mt-3 rounded"
-          type="text"
-        />{' '}
-        <SendIcon className=" border p-1 rounded-full mt-3 cursor-pointer" />
-      </div>
-    </section>
+    <div
+      style={{ height: '95vh' }}
+      className="flex flex-col  justify-between pt-2 pb-5 w-2/3 bg-[#222] relative rounded "
+    >
+      <ConversationHeader opponentName={'Arjun'} />
+      <section className=" flex flex-col justify-end  mx-2    ">
+        <div
+          style={{ height: '80vh' }}
+          ref={scrollableDivRef}
+          className="overflow-scroll     justify-end w-full"
+        >
+          {messages?.map((message, index) => (
+            <div
+              key={index + message?.created_at}
+              className={`text-start text-xs p-3  text-white mb-1 rounded w-fit max-w-lg ${
+                currentUser === message?.sender?.id
+                  ? 'bg-[#111d0a] self-end'
+                  : 'bg-[#081b17]'
+              }`}
+            >
+              {message?.content}
+              <p className="italic mt-4 text-end">
+                {moment(+message?.created_at).format('h:mm A')}
+              </p>
+            </div>
+          ))}
+        </div>
+        <ChatTextBox sendMessage={sendMessage} setText={setText} text={text} />
+      </section>
+    </div>
   )
 }
 
