@@ -21,7 +21,7 @@ export const postLogin = async ({ password, user_name }: LoginCreds) => {
         })
 
         if (res?.data) {
-            console.log(res.data.token, ' res.data.token res.data.token')
+
             window.location.href = 'Bearer' + res.data.token
         }
     }
@@ -31,7 +31,6 @@ export const postLogin = async ({ password, user_name }: LoginCreds) => {
 }
 
 export const postLogout = async ({ user_name }: { user_name: string, }) => {
-
     try {
         const res = await axios({
             headers: {
@@ -52,3 +51,29 @@ export const postLogout = async ({ user_name }: { user_name: string, }) => {
         throw err
     }
 }
+
+
+export const verifyUser = async (tokenLocalScope: string) => {
+    try {
+        const res = await axios({
+            headers: {
+                Authorization: tokenLocalScope,
+            },
+            method: 'post',
+            url: `${REACT_APP_CHAT_APP_BASE_URL}/auth/verify-user`,
+            data: {
+                token: tokenLocalScope
+            }
+        })
+        return res.data
+    }
+    catch (err: any) {
+        if (err.response.status === 401) {
+            localStorage.removeItem('chat_app_token')
+            window.location.href = 'login'
+        }
+
+    }
+}
+
+

@@ -9,7 +9,13 @@ import { postCreateUserAsync, postLoginAsync } from '../slices/users.slice'
 import * as yup from 'yup'
 import { useAppDispatch } from '../app/hooks'
 
-const NewContactModalContent = ({ setModalOpen }: { setModalOpen: any }) => {
+const NewContactModalContent = ({
+  setModalOpen,
+  fetchAll,
+}: {
+  setModalOpen: any
+  fetchAll: boolean
+}) => {
   const validationSchema = yup.object({
     user_name: yup.string().nullable().required('User name is required'),
     password: yup.string().nullable().required('Password is required'),
@@ -64,8 +70,7 @@ const NewContactModalContent = ({ setModalOpen }: { setModalOpen: any }) => {
             <TextField
               onKeyDown={async (e) => {
                 if (e.key === 'Enter') {
-                  await dispatch(postCreateUserAsync(values))
-                  setModalOpen(false)
+                  submitForm()
                 }
               }}
               onChange={(event) => {
@@ -107,11 +112,8 @@ const NewContactModalContent = ({ setModalOpen }: { setModalOpen: any }) => {
       <Formik
         validationSchema={validationSchema}
         initialValues={initialCreds}
-        onSubmit={async (
-          values: LoginCreds,
-          formikHelpers: FormikHelpers<LoginCreds>,
-        ) => {
-          await dispatch(postCreateUserAsync(values))
+        onSubmit={async (values: LoginCreds) => {
+          await dispatch(postCreateUserAsync({ ...values, fetchAll }))
           setModalOpen(false)
         }}
       >

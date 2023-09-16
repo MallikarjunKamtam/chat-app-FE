@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Form, Formik, FormikHelpers, FormikProps, ErrorMessage } from 'formik'
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
@@ -8,6 +8,8 @@ import { LoginCreds } from '../models/login.model'
 import { useAppDispatch } from '../app/hooks'
 import { postLoginAsync } from '../slices/users.slice'
 import * as yup from 'yup'
+import BasicModal from '../common-components/modal'
+import NewContactModalContent from './newContactModalContent'
 
 const LoginForm = () => {
   const validationSchema = yup.object({
@@ -18,7 +20,7 @@ const LoginForm = () => {
   const initialCreds: LoginCreds = { user_name: '', password: '' }
 
   const dispatch = useAppDispatch()
-
+  const [isModalOpen, setModalOpen] = useState(false)
   const FormContent = ({
     formikInstance,
   }: {
@@ -102,7 +104,12 @@ const LoginForm = () => {
           <span className="hover:text-white cursor-pointer">
             Forgot password ?
           </span>
-          <span className="hover:text-white cursor-pointer">
+          <span
+            onClick={() => {
+              setModalOpen(true)
+            }}
+            className="hover:text-white cursor-pointer"
+          >
             Create new account
           </span>
         </div>
@@ -111,22 +118,32 @@ const LoginForm = () => {
   }
 
   return (
-    <Formik
-      validationSchema={validationSchema}
-      initialValues={initialCreds}
-      onSubmit={async (
-        values: LoginCreds,
-        formikHelpers: FormikHelpers<LoginCreds>,
-      ) => {
-        await dispatch(postLoginAsync(values))
-      }}
-    >
-      {(formikInstance) => (
-        <Form>
-          <FormContent formikInstance={formikInstance} />
-        </Form>
-      )}
-    </Formik>
+    <>
+      <BasicModal
+        open={isModalOpen}
+        setOpen={setModalOpen}
+        modalContent={
+          <NewContactModalContent
+            fetchAll={false}
+            setModalOpen={setModalOpen}
+          />
+        }
+      />
+
+      <Formik
+        validationSchema={validationSchema}
+        initialValues={initialCreds}
+        onSubmit={async (values: LoginCreds) => {
+          await dispatch(postLoginAsync(values))
+        }}
+      >
+        {(formikInstance) => (
+          <Form>
+            <FormContent formikInstance={formikInstance} />
+          </Form>
+        )}
+      </Formik>
+    </>
   )
 }
 

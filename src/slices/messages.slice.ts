@@ -4,6 +4,7 @@ import type { RootState } from '../app/store'
 import Toast from '../common-components/toastify'
 import { getAllMessages, postSendMessage } from '../api/messages.api'
 import { IPostMessage } from '../models/messages.model'
+import { IUsers } from '../models/users.model'
 
 
 interface IMessage {
@@ -11,14 +12,8 @@ interface IMessage {
     id: string,
     content: string,
     created_at: string
-    sender: {
-        id: number,
-        user_name: string,
-    },
-    receiver: {
-        id: number,
-        user_name: string,
-    }
+    sender: IUsers,
+    receiver: IUsers
 }
 
 
@@ -31,7 +26,7 @@ const initialState: { messages: IMessage[] } = {
 export const getAllMessagesAsync = createAsyncThunk(
     '/get-all-messages-by-user',
     async (
-        payload: number,
+        payload: { senderId: number, receiverId: number },
     ) => {
         try {
             const res = await getAllMessages(payload);
@@ -50,7 +45,7 @@ export const postSendMessageAsync = createAsyncThunk(
     ) => {
         try {
             const res = await postSendMessage(payload);
-            dispatch(getAllMessagesAsync(payload?.receiver))
+            dispatch(getAllMessagesAsync({ receiverId: payload?.receiver, senderId: payload?.sender }))
             return res;
         } catch (err: any) {
         }

@@ -2,23 +2,23 @@ import { createSlice } from '@reduxjs/toolkit'
 import { PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import type { RootState } from '../app/store'
 import { IUsers } from '../models/users.model'
-import { getAllUsers, postCreateUser, putEditUser } from '../api/user.api'
-import { postLogin, postLogout } from '../api/auth.api'
+import { getAllUsers, postCreateUser, putEditUser, } from '../api/user.api'
+import { postLogin, postLogout, verifyUser } from '../api/auth.api'
 import { LoginCreds } from '../models/login.model'
 import Toast from '../common-components/toastify'
 
 // Define a type for the slice state
 interface UsersInterface {
     allUsers: IUsers[]
-
-    myProfile: { user_name: string }
+    myProfile: IUsers
 }
 
 // Define the initial state using that type
 const initialState: UsersInterface = {
     allUsers: [],
     myProfile: {
-        user_name: null
+        user_name: null,
+        id: null
     }
 }
 
@@ -58,11 +58,22 @@ export const postLogoutAsync = createAsyncThunk('post-logout-user',
     })
 
 
+export const verifyUserAsync = createAsyncThunk(
+    'verify-user',
+    async (token: string) => {
+        try {
+            const res = await verifyUser(token)
+            return res
+        } catch (err) { throw err }
+    })
+
+
+
 export const postCreateUserAsync = createAsyncThunk('post-create-user',
-    async (data: { user_name: string, password: string }, { dispatch }) => {
+    async (data: { user_name: string, password: string, fetchAll: boolean }, { dispatch }) => {
         try {
             const res = await postCreateUser(data)
-            dispatch(getAllUsersAsync())
+            data?.fetchAll && dispatch(getAllUsersAsync())
             return res
         } catch (err: any) {
             Toast(err.response.data.message, { type: "error" })
@@ -80,8 +91,10 @@ const usersSLice = createSlice({
     extraReducers(builder) {
         builder.addCase(getAllUsersAsync.fulfilled, (state, action) => {
             state.allUsers = action.payload
-        }).addCase(postLoginAsync.fulfilled, (state, action) => {
-            // state.myProfile = { user_name: action.payload }
+        }).addCase(postCreateUserAsync.fulfilled, (state, action) => {
+            Toast('Created successfully', { type: 'success' })
+        }).addCase(verifyUserAsync.fulfilled, (state, action) => {
+            state.myProfile = { id: action.payload.user.id, user_name: action.payload.user.user_name }
         })
     },
 })
