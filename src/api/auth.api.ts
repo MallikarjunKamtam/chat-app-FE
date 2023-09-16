@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getToken } from "../utils";
 import { LoginCreds } from "../models/login.model";
-import { REACT_APP_CHAT_APP_BASE_URL } from "../constants";
+
 
 
 
@@ -14,7 +14,7 @@ export const postLogin = async ({ password, user_name }: LoginCreds) => {
                 Authorization: token,
             },
             method: 'post',
-            url: `${REACT_APP_CHAT_APP_BASE_URL}/auth/login`,
+            url: `${process.env.REACT_APP_CHAT_APP_BASE_URL}/auth/login`,
             data: {
                 user_name, password
             }
@@ -37,7 +37,7 @@ export const postLogout = async ({ user_name }: { user_name: string, }) => {
                 Authorization: token,
             },
             method: 'post',
-            url: `${REACT_APP_CHAT_APP_BASE_URL}/auth/logout`,
+            url: `${process.env.REACT_APP_CHAT_APP_BASE_URL}/auth/logout`,
             data: {
                 user_name
             }
@@ -60,7 +60,7 @@ export const verifyUser = async (tokenLocalScope: string) => {
                 Authorization: tokenLocalScope,
             },
             method: 'post',
-            url: `${REACT_APP_CHAT_APP_BASE_URL}/auth/verify-user`,
+            url: `${process.env.REACT_APP_CHAT_APP_BASE_URL}/auth/verify-user`,
             data: {
                 token: tokenLocalScope
             }

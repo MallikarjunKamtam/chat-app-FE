@@ -15,7 +15,6 @@ function App() {
 
   useEffect(() => {
     const token = getToken()
-
     if (window.location.pathname.includes('home') && token) {
       dispatch(verifyUserAsync(token))
     }

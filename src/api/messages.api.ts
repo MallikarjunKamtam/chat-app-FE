@@ -1,5 +1,4 @@
 import axios from "axios";
-import { REACT_APP_CHAT_APP_BASE_URL } from "../constants";
 import { getToken } from "../utils";
 import { IPostMessage } from "../models/messages.model";
 const token = getToken()
@@ -11,7 +10,7 @@ export const getAllMessages = async ({ receiverId, senderId }: { senderId: numbe
                 Authorization: token,
             },
             method: 'get',
-            url: `${REACT_APP_CHAT_APP_BASE_URL}/messages/${senderId}/to/${receiverId}`,
+            url: `${process.env.REACT_APP_CHAT_APP_BASE_URL}/messages/${senderId}/to/${receiverId}`,
         })
         return res.data
     }
@@ -28,7 +27,7 @@ export const postSendMessage = async (data: IPostMessage) => {
                 Authorization: token,
             },
             method: 'post',
-            url: `${REACT_APP_CHAT_APP_BASE_URL}/messages`,
+            url: `${process.env.REACT_APP_CHAT_APP_BASE_URL}/messages`,
             data
         })
 
