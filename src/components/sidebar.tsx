@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import BasicModal from '../common-components/modal'
-import NewContactModalContent from './newContactModalContent'
+import React, { useEffect } from 'react'
+
 import { getAllUsersAsync, usersState } from '../slices/users.slice'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import ChatLine from '../common-components/chatListLine'

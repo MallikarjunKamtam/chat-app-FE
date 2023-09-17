@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form, Formik, FormikHelpers, FormikProps, ErrorMessage } from 'formik'
+import { Form, Formik, FormikProps, ErrorMessage } from 'formik'
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
@@ -26,7 +26,7 @@ const LoginForm = () => {
   }: {
     formikInstance: FormikProps<LoginCreds>
   }) => {
-    const { values, setValues, touched, errors, submitForm } = formikInstance
+    const { values, setValues } = formikInstance
     return (
       <div className="flex flex-col items-center justify-center p-4 pt-0 gap-3 h-screen">
         <div className="text-2xl mb-5">Welcome to Chat App</div>

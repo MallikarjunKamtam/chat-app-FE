@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import './App.css'
 import LoginForm from './components/login'
 import Dashboard from './components/dashboard'
-import { useAppDispatch, useAppSelector } from './app/hooks'
+import { useAppDispatch } from './app/hooks'
 
 import { Route, Routes, useNavigate } from 'react-router-dom'
 import NotFound from './components/notfound'

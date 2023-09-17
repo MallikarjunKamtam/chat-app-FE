@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import type { RootState } from '../app/store'
-import Toast from '../common-components/toastify'
+
 import { getAllMessages, postSendMessage } from '../api/messages.api'
 import { IPostMessage } from '../models/messages.model'
 import { IUsers } from '../models/users.model'

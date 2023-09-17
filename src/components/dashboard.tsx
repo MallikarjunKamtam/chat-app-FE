@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Sidebar from './sidebar'
-import { Button, Tooltip } from '@mui/material'
-import { postLogout } from '../api/auth.api'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
-import { postLogoutAsync, usersState } from '../slices/users.slice'
-import Toast from '../common-components/toastify'
+import { usersState } from '../slices/users.slice'
+
 import Conversations from './conversations'
 
 import BasicModal from '../common-components/modal'

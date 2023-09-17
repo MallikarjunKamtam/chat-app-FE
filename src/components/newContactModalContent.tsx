@@ -1,9 +1,8 @@
 import TextField from '@mui/material/TextField'
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
-import CloseIcon from '@mui/icons-material/Close'
 import { Box } from '@mui/material'
-import { FormikProps, ErrorMessage, Form, Formik, FormikHelpers } from 'formik'
+import { FormikProps, ErrorMessage, Form, Formik } from 'formik'
 import { LoginCreds } from '../models/login.model'
 import { postCreateUserAsync, postLoginAsync } from '../slices/users.slice'
 import * as yup from 'yup'
@@ -30,7 +29,7 @@ const NewContactModalContent = ({
   }: {
     formikInstance: FormikProps<LoginCreds>
   }) => {
-    const { values, setValues, touched, errors, submitForm } = formikInstance
+    const { values, setValues, submitForm } = formikInstance
     return (
       <div className="flex flex-col items-center justify-center p-4 pt-0 gap-3 h-[400px] bg-[#444]">
         <div className="text-2xl mb-5 text-white">Create new contact</div>
